@@ -32,7 +32,7 @@ import java.util.Random;
 public class SteadyStateEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
     private final EvolutionaryOperator<T> evolutionScheme;
-    private final FitnessEvaluator<? super T> fitnessEvaluator;
+    private final EvaluationStrategy<T> evaluationStrategy;
     private final SelectionStrategy<? super T> selectionStrategy;
     private final int selectionSize;
     private final boolean forceSingleCandidateUpdate;
@@ -72,14 +72,14 @@ public class SteadyStateEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      */
     public SteadyStateEvolutionEngine(CandidateFactory<T> candidateFactory,
                                       EvolutionaryOperator<T> evolutionScheme,
-                                      FitnessEvaluator<? super T> fitnessEvaluator,
+                                      EvaluationStrategy<T> evaluationStrategy,
                                       SelectionStrategy<? super T> selectionStrategy,
                                       int selectionSize,
                                       boolean forceSingleCandidateUpdate,
                                       Random rng)
     {
-        super(candidateFactory, fitnessEvaluator, rng);
-        this.fitnessEvaluator = fitnessEvaluator;
+        super(candidateFactory, evaluationStrategy, rng);
+        this.evaluationStrategy = evaluationStrategy;
         this.evolutionScheme = evolutionScheme;
         this.selectionStrategy = selectionStrategy;
         this.selectionSize = selectionSize;
@@ -95,9 +95,9 @@ public class SteadyStateEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                                             int eliteCount,
                                                             Random rng)
     {
-        EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, fitnessEvaluator.isNatural());
+        EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, evaluationStrategy.isNatural());
         List<T> selectedCandidates = selectionStrategy.select(evaluatedPopulation,
-                                                              fitnessEvaluator.isNatural(),
+        													  evaluationStrategy.isNatural(),
                                                               selectionSize,
                                                               rng);
         List<EvaluatedCandidate<T>> offspring = evaluatePopulation(evolutionScheme.apply(selectedCandidates, rng));

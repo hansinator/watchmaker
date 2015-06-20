@@ -17,6 +17,7 @@ package org.uncommons.watchmaker.framework;
 
 import java.util.Arrays;
 import java.util.List;
+
 import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.factories.StubIntegerFactory;
 import org.uncommons.watchmaker.framework.operators.IntegerAdjuster;
@@ -36,7 +37,7 @@ public class SteadyStateEvolutionEngineTest
     {
         SteadyStateEvolutionEngine<Integer> steadyState = new SteadyStateEvolutionEngine<Integer>(new StubIntegerFactory(),
                                                                                                   new IntegerAdjuster(5),
-                                                                                                  new NullFitnessEvaluator(),
+                                                                                                  new IndividualFitnessEvaluationStrategy<Integer>(new NullFitnessEvaluator()),
                                                                                                   new RouletteWheelSelection(),
                                                                                                   1,
                                                                                                   true,
@@ -72,7 +73,7 @@ public class SteadyStateEvolutionEngineTest
     {
         SteadyStateEvolutionEngine<Integer> steadyState = new SteadyStateEvolutionEngine<Integer>(new StubIntegerFactory(),
                                                                                                   new IntegerAdjuster(5),
-                                                                                                  new NullFitnessEvaluator(),
+                                                                                                  new IndividualFitnessEvaluationStrategy<Integer>(new NullFitnessEvaluator()),
                                                                                                   new RouletteWheelSelection(),
                                                                                                   2,
                                                                                                   true, // Force single update.
@@ -105,7 +106,7 @@ public class SteadyStateEvolutionEngineTest
     {
         SteadyStateEvolutionEngine<Integer> steadyState = new SteadyStateEvolutionEngine<Integer>(new StubIntegerFactory(),
                                                                                                   new IntegerAdjuster(10),
-                                                                                                  new NullFitnessEvaluator(),
+                                                                                                  new IndividualFitnessEvaluationStrategy<Integer>(new NullFitnessEvaluator()),
                                                                                                   new RouletteWheelSelection(),
                                                                                                   1,
                                                                                                   true,

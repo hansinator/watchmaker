@@ -18,6 +18,7 @@ package org.uncommons.watchmaker.framework;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.factories.StubIntegerFactory;
@@ -39,7 +40,7 @@ public class GenerationalEvolutionEngineTest
     {
         this.engine = new GenerationalEvolutionEngine<Integer>(new StubIntegerFactory(),
                                                                new IntegerZeroMaker(),
-                                                               new IntegerEvaluator(),
+                                                               new IndividualFitnessEvaluationStrategy<Integer>(new IntegerEvaluator()),
                                                                new RouletteWheelSelection(),
                                                                FrameworkTestUtils.getRNG());
     }

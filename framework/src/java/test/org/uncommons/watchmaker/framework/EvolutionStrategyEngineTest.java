@@ -32,7 +32,7 @@ public class EvolutionStrategyEngineTest
     {
         EvolutionStrategyEngine<Integer> engine = new EvolutionStrategyEngine<Integer>(new StubIntegerFactory(),
                                                                                        new IntegerAdjuster(-1),
-                                                                                       new IntegerEvaluator(),
+                                                                                       new IndividualFitnessEvaluationStrategy<Integer>(new IntegerEvaluator()),
                                                                                        true,
                                                                                        1,
                                                                                        FrameworkTestUtils.getRNG());
@@ -52,7 +52,7 @@ public class EvolutionStrategyEngineTest
     {
         EvolutionStrategyEngine<Integer> engine = new EvolutionStrategyEngine<Integer>(new StubIntegerFactory(),
                                                                                        new IntegerAdjuster(-1),
-                                                                                       new IntegerEvaluator(),
+                                                                                       new IndividualFitnessEvaluationStrategy<Integer>(new IntegerEvaluator()),
                                                                                        false,
                                                                                        1,
                                                                                        FrameworkTestUtils.getRNG());

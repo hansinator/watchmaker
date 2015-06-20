@@ -26,8 +26,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
+import org.uncommons.watchmaker.framework.EvaluationStrategy;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionUtils;
@@ -78,18 +80,18 @@ public class IslandEvolution<T>
                            Migration<? super T> migration,
                            CandidateFactory<T> candidateFactory,
                            EvolutionaryOperator<T> evolutionScheme,
-                           FitnessEvaluator<? super T> fitnessEvaluator,
+                           EvaluationStrategy<T> evaluationStrategy,
                            SelectionStrategy<? super T> selectionStrategy,
                            Random rng)
     {
         this(createIslands(islandCount,
                            candidateFactory,
                            evolutionScheme,
-                           fitnessEvaluator,
+                           evaluationStrategy,
                            selectionStrategy,
                            rng),
              migration,
-             fitnessEvaluator.isNatural(),
+             evaluationStrategy.isNatural(),
              rng);
     }
 
@@ -143,7 +145,7 @@ public class IslandEvolution<T>
     private static <T> List<EvolutionEngine<T>> createIslands(int islandCount,
                                                               CandidateFactory<T> candidateFactory,
                                                               EvolutionaryOperator<T> evolutionScheme,
-                                                              FitnessEvaluator<? super T> fitnessEvaluator,
+                                                              EvaluationStrategy<T> evaluationStrategy,
                                                               SelectionStrategy<? super T> selectionStrategy,
                                                               Random rng)
     {
@@ -152,10 +154,10 @@ public class IslandEvolution<T>
         {
             GenerationalEvolutionEngine<T> island = new GenerationalEvolutionEngine<T>(candidateFactory,
                                                                                        evolutionScheme,
-                                                                                       fitnessEvaluator,
+                                                                                       evaluationStrategy,
                                                                                        selectionStrategy,
                                                                                        rng);
-            island.setSingleThreaded(true); // Don't need fine-grained concurrency when each island is on a separate thread.
+            evaluationStrategy.setSingleThreaded(true); // Don't need fine-grained concurrency when each island is on a separate thread.
             islands.add(island);
         }
         return islands;

@@ -35,7 +35,7 @@ import java.util.Random;
 public class EvolutionStrategyEngine<T> extends AbstractEvolutionEngine<T>
 {
     private final EvolutionaryOperator<T> evolutionScheme;
-    private final FitnessEvaluator<? super T> fitnessEvaluator;
+    private final EvaluationStrategy<T> evaluationStrategy;
     private final boolean plusSelection;
     private final int offspringMultiplier;
 
@@ -62,14 +62,14 @@ public class EvolutionStrategyEngine<T> extends AbstractEvolutionEngine<T>
      */
     public EvolutionStrategyEngine(CandidateFactory<T> candidateFactory,
                                    EvolutionaryOperator<T> evolutionScheme,
-                                   FitnessEvaluator<? super T> fitnessEvaluator,
+                                   EvaluationStrategy<T> evaluationStrategy,
                                    boolean plusSelection,
                                    int offspringMultiplier,
                                    Random rng)
     {
-        super(candidateFactory, fitnessEvaluator, rng);
+        super(candidateFactory, evaluationStrategy, rng);
         this.evolutionScheme = evolutionScheme;
-        this.fitnessEvaluator = fitnessEvaluator;
+        this.evaluationStrategy = evaluationStrategy;
         this.plusSelection = plusSelection;
         this.offspringMultiplier = offspringMultiplier;
     }
@@ -108,7 +108,7 @@ public class EvolutionStrategyEngine<T> extends AbstractEvolutionEngine<T>
         {
             evaluatedOffspring.addAll(evaluatedPopulation);
         }
-        EvolutionUtils.sortEvaluatedPopulation(evaluatedOffspring, fitnessEvaluator.isNatural());
+        EvolutionUtils.sortEvaluatedPopulation(evaluatedOffspring, evaluationStrategy.isNatural());
         // Retain the fittest of the candidates that are eligible for survival.
         return evaluatedOffspring.subList(0, evaluatedPopulation.size());
     }

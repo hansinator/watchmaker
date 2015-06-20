@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 
 /**
@@ -45,7 +46,7 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
     private final EvolutionaryOperator<T> evolutionScheme;
-    private final FitnessEvaluator<? super T> fitnessEvaluator;
+    private final EvaluationStrategy<T> evaluationStrategy;
     private final SelectionStrategy<? super T> selectionStrategy;
 
     /**
@@ -64,13 +65,13 @@ public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      */
     public GenerationalEvolutionEngine(CandidateFactory<T> candidateFactory,
                                        EvolutionaryOperator<T> evolutionScheme,
-                                       FitnessEvaluator<? super T> fitnessEvaluator,
+                                       EvaluationStrategy<T> evaluationStrategy,
                                        SelectionStrategy<? super T> selectionStrategy,
                                        Random rng)
     {
-        super(candidateFactory, fitnessEvaluator, rng);
+        super(candidateFactory, evaluationStrategy, rng);
         this.evolutionScheme = evolutionScheme;
-        this.fitnessEvaluator = fitnessEvaluator;
+        this.evaluationStrategy = evaluationStrategy;
         this.selectionStrategy = selectionStrategy;
     }
 
@@ -94,9 +95,11 @@ public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     {
         this(candidateFactory,
              evolutionScheme,
-             new NullFitnessEvaluator(), // No fitness evaluations to perform.
+             // No fitness evaluations to perform.
+             new IndividualFitnessEvaluationStrategy<T>(new  NullFitnessEvaluator()),
              selectionStrategy,
              rng);
+        evaluationStrategy.setSingleThreaded(true);
     }
 
 
@@ -120,7 +123,7 @@ public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         // Then select candidates that will be operated on to create the evolved
         // portion of the next generation.
         population.addAll(selectionStrategy.select(evaluatedPopulation,
-                                                   fitnessEvaluator.isNatural(),
+        										   evaluationStrategy.isNatural(),
                                                    evaluatedPopulation.size() - eliteCount,
                                                    rng));
         // Then evolve the population.

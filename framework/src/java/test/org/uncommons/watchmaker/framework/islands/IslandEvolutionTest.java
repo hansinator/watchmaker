@@ -16,9 +16,11 @@
 package org.uncommons.watchmaker.framework.islands;
 
 import java.util.List;
+
 import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 import org.uncommons.watchmaker.framework.FrameworkTestUtils;
+import org.uncommons.watchmaker.framework.IndividualFitnessEvaluationStrategy;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.factories.StubIntegerFactory;
 import org.uncommons.watchmaker.framework.operators.IntegerAdjuster;
@@ -48,7 +50,7 @@ public class IslandEvolutionTest
                                                                                 new RingMigration(),
                                                                                 new StubIntegerFactory(),
                                                                                 new IntegerAdjuster(2),
-                                                                                new DummyFitnessEvaluator(),
+                                                                                new IndividualFitnessEvaluationStrategy<Integer>(new DummyFitnessEvaluator()),
                                                                                 new RouletteWheelSelection(),
                                                                                 FrameworkTestUtils.getRNG());
         final int[] observedEpochCount = new int[1];
@@ -85,7 +87,7 @@ public class IslandEvolutionTest
                                                                                 new RingMigration(),
                                                                                 new StubIntegerFactory(),
                                                                                 new IntegerAdjuster(2),
-                                                                                new DummyFitnessEvaluator(),
+                                                                                new IndividualFitnessEvaluationStrategy<Integer>(new DummyFitnessEvaluator()),
                                                                                 new RouletteWheelSelection(),
                                                                                 FrameworkTestUtils.getRNG());
         final long timeout = 1000L;
@@ -120,7 +122,7 @@ public class IslandEvolutionTest
                                                                                 new RingMigration(),
                                                                                 new StubIntegerFactory(),
                                                                                 new IntegerAdjuster(2),
-                                                                                new DummyFitnessEvaluator(),
+                                                                                new IndividualFitnessEvaluationStrategy<Integer>(new DummyFitnessEvaluator()),
                                                                                 new RouletteWheelSelection(),
                                                                                 FrameworkTestUtils.getRNG());
         // Should throw an IllegalStateException because evolution hasn't started, let alone terminated.
