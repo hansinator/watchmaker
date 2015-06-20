@@ -18,6 +18,7 @@ package org.uncommons.watchmaker.framework;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.uncommons.maths.statistics.DataSet;
 
 /**
@@ -124,6 +125,7 @@ public final class EvolutionUtils
                                      stats.getSize(),
                                      eliteCount,
                                      iterationNumber,
-                                     System.currentTimeMillis() - startTime);
+                                     System.currentTimeMillis() - startTime,
+                                     evaluatedPopulation);
     }
 }

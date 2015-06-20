@@ -65,7 +65,7 @@ public class FittestCandidateViewTest
         frame.validate();
         frame.setVisible(true);
 
-        view.populationUpdate(new PopulationData<BigDecimal>(BigDecimal.TEN, 10, 5, 2, true, 5, 0, 1, 100));
+        view.populationUpdate(new PopulationData<BigDecimal>(BigDecimal.TEN, 10, 5, 2, true, 5, 0, 1, 100, null));
         robot.waitForIdle();
 
         // Check displayed fitness.
@@ -96,14 +96,14 @@ public class FittestCandidateViewTest
         frame.validate();
         frame.setVisible(true);
 
-        PopulationData<BigDecimal> data1 = new PopulationData<BigDecimal>(BigDecimal.TEN, 10, 5, 2, true, 5, 0, 1, 100);
+        PopulationData<BigDecimal> data1 = new PopulationData<BigDecimal>(BigDecimal.TEN, 10, 5, 2, true, 5, 0, 1, 100, null);
         // Render the first time.
         view.populationUpdate(data1);
         robot.waitForIdle();
         JTextComponent component1 = frameFixture.textBox().component();
 
         // Render the same candidate for the second generation.
-        PopulationData<BigDecimal> data2 = new PopulationData<BigDecimal>(BigDecimal.TEN, 10, 5, 2, true, 5, 0, 2, 100);
+        PopulationData<BigDecimal> data2 = new PopulationData<BigDecimal>(BigDecimal.TEN, 10, 5, 2, true, 5, 0, 2, 100, null);
         view.populationUpdate(data2);
         robot.waitForIdle();
         JTextComponent component2 = frameFixture.textBox().component();

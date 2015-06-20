@@ -15,6 +15,8 @@
 //=============================================================================
 package org.uncommons.watchmaker.framework;
 
+import java.util.List;
+
 /**
  * Immutable data object containing statistics about the state of
  * an evolved population and a reference to the fittest candidate
@@ -35,6 +37,7 @@ public final class PopulationData<T>
     private final int eliteCount;
     private final int generationNumber;
     private final long elapsedTime;
+    private final List<EvaluatedCandidate<T>> evaluatedPopulation;
 
     /**
      * @param bestCandidate The fittest candidate present in the population.
@@ -60,7 +63,8 @@ public final class PopulationData<T>
                           int populationSize,
                           int eliteCount,
                           int generationNumber,
-                          long elapsedTime)
+                          long elapsedTime,
+                          List<EvaluatedCandidate<T>> evaluatedPopulation)
     {
         this.bestCandidate = bestCandidate;
         this.bestCandidateFitness = bestCandidateFitness;
@@ -71,6 +75,7 @@ public final class PopulationData<T>
         this.eliteCount = eliteCount;
         this.generationNumber = generationNumber;
         this.elapsedTime = elapsedTime;
+        this.evaluatedPopulation = evaluatedPopulation;
     }
 
 
@@ -162,4 +167,12 @@ public final class PopulationData<T>
     {
         return elapsedTime;
     }
+    
+    /**
+     * @return The evaluated population
+     */
+    public List<EvaluatedCandidate<T>> getEvaluatedPopulation()
+	{
+		return evaluatedPopulation;
+	}
 }
