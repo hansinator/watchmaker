@@ -17,12 +17,15 @@ package org.uncommons.watchmaker.examples.strings;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
+import org.uncommons.watchmaker.framework.EvaluationStrategy;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
+import org.uncommons.watchmaker.framework.IndividualFitnessEvaluationStrategy;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.factories.StringFactory;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
@@ -70,9 +73,10 @@ public final class StringsExample
         operators.add(new StringMutation(ALPHABET, new Probability(0.02d)));
         operators.add(new StringCrossover());
         EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(operators);
+        EvaluationStrategy<String> evaluationStrategy = new IndividualFitnessEvaluationStrategy<String>(new StringEvaluator(target));
         EvolutionEngine<String> engine = new GenerationalEvolutionEngine<String>(factory,
                                                                                  pipeline,
-                                                                                 new StringEvaluator(target),
+                                                                                 evaluationStrategy,
                                                                                  new RouletteWheelSelection(),
                                                                                  new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());

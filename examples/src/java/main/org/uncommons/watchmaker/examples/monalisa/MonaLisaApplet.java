@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Random;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -35,15 +36,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+
 import org.uncommons.maths.random.Probability;
 import org.uncommons.maths.random.XORShiftRNG;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.examples.AbstractExampleApplet;
 import org.uncommons.watchmaker.framework.CachingFitnessEvaluator;
+import org.uncommons.watchmaker.framework.EvaluationStrategy;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
+import org.uncommons.watchmaker.framework.IndividualFitnessEvaluationStrategy;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
@@ -211,6 +215,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
             Random rng = new XORShiftRNG();
             FitnessEvaluator<List<ColouredPolygon>> evaluator
                 = new CachingFitnessEvaluator<List<ColouredPolygon>>(new PolygonImageEvaluator(targetImage));
+            EvaluationStrategy<List<ColouredPolygon>> evaluationStrategy = new IndividualFitnessEvaluationStrategy<List<ColouredPolygon>>(evaluator);
             PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
             EvolutionaryOperator<List<ColouredPolygon>> pipeline
                 = probabilitiesPanel.createEvolutionPipeline(factory, canvasSize, rng);
@@ -219,7 +224,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
             EvolutionEngine<List<ColouredPolygon>> engine
                 = new GenerationalEvolutionEngine<List<ColouredPolygon>>(factory,
                                                                          pipeline,
-                                                                         evaluator,
+                                                                         evaluationStrategy,
                                                                          selection,
                                                                          rng);
             engine.addEvolutionObserver(monitor);

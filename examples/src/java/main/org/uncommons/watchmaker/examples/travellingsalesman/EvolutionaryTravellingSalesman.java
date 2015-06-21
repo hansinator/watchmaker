@@ -20,13 +20,16 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.watchmaker.framework.CandidateFactory;
+import org.uncommons.watchmaker.framework.EvaluationStrategy;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
+import org.uncommons.watchmaker.framework.IndividualFitnessEvaluationStrategy;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.factories.ListPermutationFactory;
@@ -129,10 +132,11 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
 
         CandidateFactory<List<String>> candidateFactory
             = new ListPermutationFactory<String>(new LinkedList<String>(cities));
+        EvaluationStrategy<List<String>> evaluationStrategy = new IndividualFitnessEvaluationStrategy<List<String>>(new RouteEvaluator(distances));
         EvolutionEngine<List<String>> engine
             = new GenerationalEvolutionEngine<List<String>>(candidateFactory,
                                                             pipeline,
-                                                            new RouteEvaluator(distances),
+                                                            evaluationStrategy,
                                                             selectionStrategy,
                                                             rng);
         if (progressListener != null)

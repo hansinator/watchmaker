@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -36,6 +37,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
+
 import org.uncommons.maths.random.DiscreteUniformGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.PoissonGenerator;
@@ -43,10 +45,12 @@ import org.uncommons.maths.random.Probability;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.examples.AbstractExampleApplet;
+import org.uncommons.watchmaker.framework.EvaluationStrategy;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
+import org.uncommons.watchmaker.framework.IndividualFitnessEvaluationStrategy;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
@@ -222,10 +226,11 @@ public class SudokuApplet extends AbstractExampleApplet
                                                     new DiscreteUniformGenerator(1, 8, rng)));
 
                 EvolutionaryOperator<Sudoku> pipeline = new EvolutionPipeline<Sudoku>(operators);
+                EvaluationStrategy<Sudoku> evaluationStrategy = new IndividualFitnessEvaluationStrategy<Sudoku>(new SudokuEvaluator());
 
                 EvolutionEngine<Sudoku> engine = new GenerationalEvolutionEngine<Sudoku>(new SudokuFactory(puzzle),
                                                                                          pipeline,
-                                                                                         new SudokuEvaluator(),
+                                                                                         evaluationStrategy,
                                                                                          selectionStrategy,
                                                                                          rng);
                 engine.addEvolutionObserver(new SwingEvolutionObserver<Sudoku>(new GridViewUpdater(),

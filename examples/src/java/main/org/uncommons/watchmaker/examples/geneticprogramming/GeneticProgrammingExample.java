@@ -19,12 +19,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.examples.EvolutionLogger;
+import org.uncommons.watchmaker.framework.EvaluationStrategy;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
+import org.uncommons.watchmaker.framework.IndividualFitnessEvaluationStrategy;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
@@ -74,9 +77,10 @@ public class GeneticProgrammingExample
         operators.add(new TreeCrossover());
         operators.add(new Simplification());
         TreeEvaluator evaluator = new TreeEvaluator(data);
+        EvaluationStrategy<Node> evaluationStrategy = new IndividualFitnessEvaluationStrategy<Node>(evaluator);
         EvolutionEngine<Node> engine = new GenerationalEvolutionEngine<Node>(factory,
                                                                              new EvolutionPipeline<Node>(operators),
-                                                                             evaluator,
+                                                                             evaluationStrategy,
                                                                              new RouletteWheelSelection(),
                                                                              new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger<Node>());
